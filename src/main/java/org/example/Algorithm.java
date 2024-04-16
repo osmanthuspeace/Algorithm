@@ -1,5 +1,8 @@
 package org.example;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 import java.util.Stack;
 
 public class Algorithm {
@@ -41,6 +44,7 @@ public class Algorithm {
         return operands.pop();
     }
 
+    //匹配括号
     public static boolean isValidParentheses(String s) {
         Stack<Character> parentheses = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
@@ -113,9 +117,53 @@ public class Algorithm {
         }
     }
 
+    //约瑟夫问题
     public static void Josephus(int n, int m) {
         var circular = new CircularLinkedList(n);
         circular.pop(m);
     }
 
+    public static int TwoSumFast(int @NotNull [] arr) {
+        var length = arr.length;
+        int count = 0;
+
+        for (int i = 0; i < length; i++) {
+            if (arr[i] < 0) arr[i] = -arr[i];
+        }
+        Arrays.sort(arr);
+
+        for (int i = 0; i < length - 1; i++) {
+            if (arr[i] == arr[i + 1]) {
+                count++;
+                i++;
+            }
+        }
+        return count;
+    }
+
+    public static int ThreeSumFast(int[] arr) {
+        Arrays.sort(arr);
+        var length = arr.length;
+        int count = 0;
+
+        //双指针实现
+        for (int i = 0; i < length; i++) {
+            var left = i + 1;
+            var right = length - 1;
+            while (left < right) {
+                if (arr[i] + arr[left] + arr[right] == 0) {
+                    count++;
+                    left++;
+                    right--;
+                    while (arr[left] == arr[left - 1] && left < right) left++;//为了不重复计数，跳过重复的数字
+                    while (arr[right] == arr[right + 1] && left < right) right--;
+                } else if (arr[i] + arr[left] + arr[right] < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        return count;
+    }
 }

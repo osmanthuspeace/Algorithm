@@ -1,4 +1,4 @@
-package org.example;
+package org.example.DataStructure;
 
 import org.jetbrains.annotations.NotNull;
 
