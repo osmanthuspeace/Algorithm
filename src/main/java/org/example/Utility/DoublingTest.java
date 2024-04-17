@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Utility;
 
 import edu.princeton.cs.algs4.*;
 

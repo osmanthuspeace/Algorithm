@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Utility;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,8 +20,9 @@ public class RandomNumbers {
         Path path = Paths.get(filename);
         for (int i = 0; i < count; i++) {
             // Generate a random integer and append it to the builder
-            builder.append(random.nextInt(0,100))
+            builder.append(random.nextInt(0, 100))
                     .append(System.lineSeparator());
+            //用StringBuilder动态的接受数字，批量的写入文件，避免了重复的IO操作
             if (i % 10000 == 0) {
                 try {
                     // Write in chunks to reduce memory usage
@@ -39,7 +40,12 @@ public class RandomNumbers {
         }
         // Write any remaining data
         try {
-            Files.write(path, builder.toString().getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            Files.write(
+                    path,
+                    builder.toString().getBytes(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }
