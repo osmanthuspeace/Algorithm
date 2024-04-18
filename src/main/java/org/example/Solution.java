@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -188,5 +190,11 @@ public class Solution {
             return p;
         }
     }
+
+    //TODO:46. 全排列
+//    public List<List<Integer>> permute(int[] nums) {
+//
+//    }
+
 
 }

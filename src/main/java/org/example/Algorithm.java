@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Stack;
 
+import static org.example.MySorts.less;
+
 public class Algorithm {
 
     //TODO: 14. Longest Common Prefix
@@ -87,5 +89,11 @@ public class Algorithm {
             }
         }
         return count;
+    }
+
+
+    public static <T extends Comparable<T>> void merge(T[] a, int lo, int mid, int hi) {
+        T[] aux = Arrays.copyOf(a, a.length);
+
     }
 }
