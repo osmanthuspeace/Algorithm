@@ -1,4 +1,4 @@
-package org.example.Utility;
+package org.example.Visualization;
 
 import edu.princeton.cs.algs4.StdDraw;
 

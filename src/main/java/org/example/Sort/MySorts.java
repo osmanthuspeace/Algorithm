@@ -1,6 +1,10 @@
 package org.example;
 
 import edu.princeton.cs.algs4.StdIn;
+import org.example.Utility.MyMergeSort;
+
+import java.util.Arrays;
+
 
 /**
  * author: osmanthuspeace
@@ -8,6 +12,7 @@ import edu.princeton.cs.algs4.StdIn;
  */
 
 public class MySorts {
+
 
     //基本类型的包装类基本都实现了Comparable<T>接口
     public static <T extends Comparable<T>> void InsertSort(T[] a) {
@@ -40,8 +45,23 @@ public class MySorts {
         }
     }
 
+    public static <T extends Comparable<T>> void MergeSort(T[] a) {
+        var m = new MyMergeSort<>(a);
+        m.mergeSort(a, 0, a.length - 1);
+    }
+
+    public static <T extends Comparable<T>> void MergeSortOptimizedByInsertion(T[] a) {
+        var m = new MyMergeSort<>(a);
+        m.mergeSortOptimizedByInsertion(a, 0, a.length - 1);
+    }
+
+    public static <T extends Comparable<T>> void BottomUpMergeSort(T[] a) {
+        var m = new MyMergeSort<>(a);
+        m.BottomUpMergeSort(a);
+    }
+
     //v<w
-    public static <T extends Comparable<T>> boolean less(T v, T w) {//T 表示一个具体的类型，该类型实现了 Comparable<T>，
+    private static <T extends Comparable<T>> boolean less(T v, T w) {//T 表示一个具体的类型，该类型实现了 Comparable<T>，
         return v.compareTo(w) < 0; // 正确且类型安全的调用
     }
 

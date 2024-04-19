@@ -11,8 +11,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static org.example.MySorts.InsertSort;
-import static org.example.MySorts.ShellSort;
+import static org.example.MySorts.*;
 
 public class SortCompare {
 
@@ -34,6 +33,9 @@ public class SortCompare {
             case "System" -> Arrays.sort(a);
             case "MyInsertion" -> InsertSort(a);
             case "MyShell" -> ShellSort(a);
+            case "MyMerge" -> MergeSort(a);
+            case "MyBetterMerge" -> MergeSortOptimizedByInsertion(a);
+            case "MyMergeBU" -> BottomUpMergeSort(a);
             default -> throw new IllegalArgumentException("Invalid algorithm: " + alg);
         }
         return sw.elapsedTime();
@@ -46,7 +48,7 @@ public class SortCompare {
         // Perform one experiment (generate and sort an array).
         for (int t = 0; t < trials; t++) {
             for (int i = 0; i < n; i++)
-                a[i] = StdRandom.uniformDouble(0.0, 1.0);
+                a[i] = StdRandom.uniformDouble(1.0, 10.0);
             total += time(alg, a);
         }
         return total;
@@ -74,10 +76,10 @@ public class SortCompare {
         int trials = s.nextInt();
         String option = s.next();
         double time1, time2;
-        if (Objects.equals(option, "sorted")) {
+        if (Objects.equals(option, "s")) {
             time1 = timeSortedInput(alg1, n, trials);   // Total for alg1.
             time2 = timeSortedInput(alg2, n, trials);   // Total for alg2.
-        } else if (Objects.equals(option, "random")) {
+        } else if (Objects.equals(option, "r")) {
             time1 = timeRandomInput(alg1, n, trials);   // Total for alg1.
             time2 = timeRandomInput(alg2, n, trials);   // Total for alg2.
         } else {
@@ -88,7 +90,7 @@ public class SortCompare {
         double ratio = time2 / time1;
         double epsilon = 0.1;
         if (Math.abs(ratio - 1.0) < epsilon)
-            StdOut.printf("The two sort algorithms have almost the same speed");
+            StdOut.printf(" almost as fast as %s\n", alg2);
         else if (ratio > 1.0)
             StdOut.printf(" %.1f times faster than %s\n", ratio, alg2);
         else
