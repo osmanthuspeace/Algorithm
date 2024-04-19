@@ -1,4 +1,4 @@
-package org.example.Utility;
+package org.example.Sort;
 
 import java.util.Arrays;
 
@@ -48,7 +48,7 @@ public class MyMergeSort<T extends Comparable<T>> {
             merge(a, lo, mid, hi);
     }
 
-    //此时的a[hi]是需要比较的
+    //此时的a[hi]是需要参与比较的
     private void insertion(T[] a, int lo, int hi) {
         for (int i = lo; i <= hi; i++) {
             for (int j = i; j > lo && less(a[j], a[j - 1]); j--) {

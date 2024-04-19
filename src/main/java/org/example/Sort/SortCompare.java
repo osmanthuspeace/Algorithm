@@ -1,4 +1,4 @@
-package org.example.Utility;
+package org.example.Sort;
 
 /**
  * author: osmanthuspeace
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static org.example.MySorts.*;
+import static org.example.Sort.MySorts.*;
 
 public class SortCompare {
 

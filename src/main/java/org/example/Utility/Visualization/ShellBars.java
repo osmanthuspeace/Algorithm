@@ -1,4 +1,4 @@
-package org.example.Visualization;
+package org.example.Utility.Visualization;
 
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdRandom;

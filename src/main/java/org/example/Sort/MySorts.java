@@ -1,9 +1,6 @@
-package org.example;
+package org.example.Sort;
 
 import edu.princeton.cs.algs4.StdIn;
-import org.example.Utility.MyMergeSort;
-
-import java.util.Arrays;
 
 
 /**
