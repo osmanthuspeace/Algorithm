@@ -1,6 +1,9 @@
 package org.example.Sort;
 
 import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdRandom;
+
+import java.util.Arrays;
 
 
 /**
@@ -55,6 +58,17 @@ public class MySorts {
     public static <T extends Comparable<T>> void BottomUpMergeSort(T[] a) {
         var m = new MyMergeSort<>(a);
         m.BottomUpMergeSort(a);
+    }
+
+    public static <T extends Comparable<T>> void QuickSort(T[] a) {
+        StdRandom.shuffle(a);//先打乱数组，使得快排可以发挥更好的性能
+        var q = new MyQuickSort<T>();
+        q.QuickSort(a, 0, a.length - 1);
+    }
+
+    public static <T extends Comparable<T>> void BetterQuickSort(T[] a) {
+        var q = new MyQuickSort<T>();
+        q.BetterQuickSort(a, 0, a.length - 1);
     }
 
     //v<w

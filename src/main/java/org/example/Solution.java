@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -9,6 +10,7 @@ import java.util.Stack;
  * createTime: 2024/4/17
  */
 //The solutions of leetcode or luogu
+@SuppressWarnings("unused")
 public class Solution {
 
     //20:匹配括号
@@ -192,10 +194,96 @@ public class Solution {
         }
     }
 
+
+    //75:三向切分快速排序
+    public void sortColors(int[] nums) {
+        sort3(nums, 0, nums.length - 1);
+    }
+
+    private void sort3(int[] a, int lo, int hi) {
+        int lt = lo, gt = hi, i = lt + 1;
+        if (lo >= hi) return;
+        int pivot = a[lo];
+        while (i <= gt) {
+            if (a[i] < pivot) exchange(a, lt++, i++);
+            else if (a[i] > pivot) exchange(a, i, gt--);
+            else i++;
+        }
+        sort3(a, lo, lt - 1);
+        sort3(a, gt + 1, hi);
+    }
+
+    private void exchange(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+
+    //912:快排
+    public int[] sortArray(int[] nums) {
+        quickSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+
+    private void quickSort(int[] a, int lo, int hi) {
+
+        if (lo >= hi) return;
+        int pivot = partition(a, lo, hi);
+        quickSort(a, lo, pivot - 1);
+        quickSort(a, pivot + 1, hi);
+
+    }
+
+    private int partition(int[] a, int lo, int hi) {
+        int mid = (hi + lo) / 2;
+        if (a[lo] > a[mid]) exchange(a, mid, lo);
+        if (a[mid] > a[hi]) exchange(a, mid, hi);
+        if (a[lo] > a[hi]) exchange(a, lo, hi);
+        int i = lo, j = hi + 1;
+        int pivot = a[mid];
+        exchange(a, lo, mid);
+        while (true) {
+            while (a[++i] < pivot) if (i == hi) break;
+            while (a[--j] > pivot) if (j == lo) break;
+            if (i >= j) break;
+            exchange(a, i, j);
+        }
+        exchange(a, lo, j);
+        return j;
+    }
+
+    //34:二分查找
+    public int[] searchRange(int[] nums, int target) {
+        if (nums.length == 0) return new int[]{-1, -1};
+        int headL = 0, headR = nums.length - 1, headM;
+        int endL = 0, endR = nums.length - 1, endM;
+        int left = -1, right = -1;
+        while (headL < headR) {
+            headM = (headL + headR) / 2;
+            if (nums[headM] < target) headL = headM + 1;
+            else headR = headM; //即使与target相等，也要继续寻找
+        }
+        if (nums[headL] == target) left = headL;
+        while (endL < endR) {
+            endM = (endL + endR + 1) / 2; //向上取整，匹配下方的endR=endM-1
+            if (nums[endM] <= target) endL = endM;
+            else endR = endM - 1;
+        }
+        if (nums[endR] == target) right = endR;
+        return new int[]{left, right};
+    }
+
     //TODO:46. 全排列
 //    public List<List<Integer>> permute(int[] nums) {
 //
 //    }
 
+    public static void main(String[] args) {
+        int[] aa = new int[]{5, 7, 7, 8, 8, 10};
+        var s = new Solution();
+        var result = s.searchRange(aa, 8);
+        System.out.println(Arrays.toString(result));
+
+    }
 
 }

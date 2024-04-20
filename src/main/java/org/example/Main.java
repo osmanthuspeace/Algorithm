@@ -3,13 +3,14 @@ package org.example;
 
 import java.util.Arrays;
 
-import static org.example.Sort.MySorts.*;
+import static org.example.Sort.MySorts.BetterQuickSort;
+import static org.example.Sort.MySorts.QuickSort;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
-        var a = new Integer[]{2, 1, 3, 5, 4, 6, 8, 7, 9};
-        BottomUpMergeSort(a);
+        var a = new Integer[]{2, 2, 1, 1, 1};
+        BetterQuickSort(a);
         System.out.println(Arrays.toString(a));
     }
 }

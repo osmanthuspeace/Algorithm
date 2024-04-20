@@ -36,6 +36,8 @@ public class SortCompare {
             case "MyMerge" -> MergeSort(a);
             case "MyBetterMerge" -> MergeSortOptimizedByInsertion(a);
             case "MyMergeBU" -> BottomUpMergeSort(a);
+            case "MyQuick" -> QuickSort(a);
+            case "MyBetterQuick" -> BetterQuickSort(a);
             default -> throw new IllegalArgumentException("Invalid algorithm: " + alg);
         }
         return sw.elapsedTime();

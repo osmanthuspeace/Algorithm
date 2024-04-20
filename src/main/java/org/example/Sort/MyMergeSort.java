@@ -78,5 +78,4 @@ public class MyMergeSort<T extends Comparable<T>> {
     private boolean less(T v, T w) {
         return v.compareTo(w) < 0;
     }
-
 }
