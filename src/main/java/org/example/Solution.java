@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * author: osmanthuspeace
@@ -278,11 +275,114 @@ public class Solution {
 //
 //    }
 
+    //739:单调栈
+    public int[] dailyTemperatures(int[] temperatures) {
+        var monotone = new Stack<Integer>();//构造单调递增栈
+        var result = new int[temperatures.length];
+        for (int i = 0; i < temperatures.length; i++) {
+            if (monotone.isEmpty()) {
+                monotone.push(i);//保存索引，是因为可以通过下标获取元素，但不能通过元素获取下标
+            } else {
+                var top = monotone.peek();
+                while ((!monotone.isEmpty()) && (temperatures[monotone.peek()] < temperatures[i])) {
+                    top = monotone.pop();//不需要保存栈的所有元素，将已经有结果的数据弹出，使得每个元素只会入栈和出栈各一次
+                    result[top] = i - top;
+                }
+                monotone.push(i);
+            }
+        }
+        return result;
+    }
+
+    public static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    //148. 排序链表
+    public ListNode sortList(ListNode head) {
+
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode quick = head, slow = head;
+        ListNode prev = null; // 用于记录慢指针的前一个节点，用于切链
+
+        //快慢指针找中间节点
+        while (quick != null && quick.next != null) {
+            prev = slow;
+            slow = slow.next;
+            quick = quick.next.next;
+        }
+        prev.next = null;
+        var result1 = sortList(head);
+        //返回的是合并后链表的头指针
+        var result2 = sortList(slow);
+        return mergeList(result1, result2);
+    }
+
+    private ListNode mergeList(ListNode l1, ListNode l2) {
+
+        var head = new ListNode(Integer.MIN_VALUE);//哨兵元素，用于保存链表的头的位置，它的next才是链表构建的开始
+        var cur = head;//此时cur非空，只是cur.next为null
+        while (true) {
+            if (l1 == null) {
+                cur.next = l2;
+                break;
+
+            } else if (l2 == null) {
+                cur.next = l1;
+                break;
+
+            } else if (l1.val < l2.val) {
+                cur.next = l1;
+                l1 = l1.next;
+            } else {
+                cur.next = l2;
+                l2 = l2.next;
+            }
+            cur = cur.next;
+        }
+        return head.next;
+    }
+
+
     public static void main(String[] args) {
-        int[] aa = new int[]{5, 7, 7, 8, 8, 10};
+        int[] aa = new int[]{89, 62, 70, 58, 47, 47, 46, 76, 100, 70};
+        int[] a = new int[]{-1, 5, 3, 4, 0};
         var s = new Solution();
-        var result = s.searchRange(aa, 8);
-        System.out.println(Arrays.toString(result));
+
+        ListNode head = null;
+        ListNode l = null;
+        for (int value : a) {
+            if (head == null) {
+                head = new ListNode(value);
+                l = head;
+            } else {
+                l.next = new ListNode(value);
+                l = l.next;
+            }
+        }
+
+        var result = s.sortList(head);
+
+        while (result != null) {
+            System.out.print(" " + result.val);
+            result = result.next;
+        }
 
     }
 
