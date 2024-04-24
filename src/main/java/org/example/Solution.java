@@ -1,6 +1,13 @@
 package org.example;
 
+import org.example.DataStructure.MyPriorityQueue;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static edu.princeton.cs.algs4.StdOut.print;
 
 /**
  * author: osmanthuspeace
@@ -359,30 +366,139 @@ public class Solution {
         return head.next;
     }
 
-
-    public static void main(String[] args) {
-        int[] aa = new int[]{89, 62, 70, 58, 47, 47, 46, 76, 100, 70};
-        int[] a = new int[]{-1, 5, 3, 4, 0};
-        var s = new Solution();
-
-        ListNode head = null;
-        ListNode l = null;
-        for (int value : a) {
-            if (head == null) {
-                head = new ListNode(value);
-                l = head;
+    //27. 移除元素（直接的想法，但是空间复杂度太大）
+    public int removeElement(int[] nums, int val) {
+        int count = 0;
+        int[] temp = Arrays.copyOf(nums, nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            if (temp[i] == val) {
+                temp[i] = -1;
             } else {
-                l.next = new ListNode(value);
-                l = l.next;
+                count++;
+            }
+        }
+        for (int i = 0, j = 0; i < temp.length; i++) {
+            if (temp[i] != -1) {
+                nums[j++] = temp[i];
+            }
+        }
+        return count;
+    }
+
+    //26. 删除有序数组中的重复项（尝试使用双指针的思想）
+    public int removeDuplicates(int[] nums) {
+        int keep = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[keep]) {
+                nums[++keep] = nums[i];//将去重过后的元素填入数组的开头
+            }
+        }
+        return keep;
+    }
+
+    //169:摩尔投票法
+    public int majorityElement(int[] nums) {
+        //第一想法是哈希，但是nums[i]很大，不实用
+        //另外注意到出现次数大于 ⌊ n/2 ⌋ 的元素一定只有一个，且排序之后一定在中间，但是时间复杂度高
+        if (nums.length == 1) return nums[0];
+        int major = nums[0];
+        int count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] == major) count++; //票数加一
+            else {
+                if (count == 0) major = nums[i];//票没了，换一个数
+                else count--;//用不同的数字抵消票数
+            }
+        }
+        return major;
+    }
+
+    //229:推广到k的摩尔投票法
+    public List<Integer> majorityElement2(int[] nums, int k) {
+        //出现次数超过n/k的数最多只有k-1个
+        if (nums.length == 1) return List.of(nums[0]);
+        int[] count = new int[k - 1];
+        int[] major = new int[k - 1];
+        Arrays.fill(major, Integer.MIN_VALUE);//用不可能的数初始化
+        Arrays.fill(count, 0);
+        for (int cur : nums) {
+            boolean settled = false;
+            for (int j = 0; j < k - 1; j++) {
+                if (major[j] == cur) {
+                    count[j]++;
+                    settled = true;
+                    break;//对于每一个cur，只要做一次操作：票数++；替换为major；抵消，三种之一，不能重复操作，否则会造成正确的结果被覆盖结果
+                }
+            }
+            if (!settled) {
+                for (int j = 0; j < k - 1; j++) {
+                    if (count[j] == 0) {//count中为0的就是应该要被替换的元素
+                        major[j] = cur;
+                        count[j] = 1;
+                        settled = true;
+                        break;
+                    }
+                }
+            }
+            if (!settled) {
+                for (int j = 0; j < k - 1; j++) {
+                    count[j]--;//每一个不同的元素要抵消目前所有的major一票
+                }
             }
         }
 
-        var result = s.sortList(head);
+        return getResult(nums, k, major);
+    }
 
-        while (result != null) {
-            System.out.print(" " + result.val);
-            result = result.next;
+    private static @NotNull List<Integer> getResult(int[] nums, int k, int[] major) {
+        Map<Integer, Integer> actualCounts = new HashMap<>();
+        //检查major中是不是都是满足出现次数大于n/k的元素
+        for (int num : nums) {
+            for (int candidate : major) {
+                if (num == candidate) {
+                    actualCounts.put(num, actualCounts.getOrDefault(num, 0) + 1);
+                    break;
+                }
+            }
         }
+
+        List<Integer> result = new ArrayList<>();
+        final int threshold = nums.length / k;
+        for (Map.Entry<Integer, Integer> entry : actualCounts.entrySet()) {
+            if (entry.getValue() > threshold) {
+                result.add(entry.getKey());
+            }
+        }
+        return result;
+    }
+
+
+    public static void main(String[] args) {
+        int[] aa = new int[]{89, 62, 70, 58, 47, 47, 46, 76, 100, 70};
+        int[] a = new int[]{4, 4, 1, 2, 2, 2};
+        var s = new Solution();
+        var list = s.majorityElement2(a, 3).toArray();
+        for (Object o : list) {
+            print(o + " ");
+        }
+//        ListNode head = null;
+//        ListNode l = null;
+//        for (int value : a) {
+//            if (head == null) {
+//                head = new ListNode(value);
+//                l = head;
+//            } else {
+//                l.next = new ListNode(value);
+//                l = l.next;
+//            }
+//        }
+//
+//        var result = s.sortList(head);
+//
+//        while (result != null) {
+//            System.out.print(" " + result.val);
+//            result = result.next;
+//        }
 
     }
 
