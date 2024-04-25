@@ -1,9 +1,10 @@
 package org.example;
 
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.IndexMinPQ;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
 
 //Record the study progress of the Algorithm
 public class Algorithm {
@@ -42,12 +43,12 @@ public class Algorithm {
         int count = 0;
 
         for (int i = 0; i < length; i++) {
-            if (arr[i] < 0) arr[i] = -arr[i];
+            if (arr[i] < 0) arr[i] = -arr[i];//取绝对值
         }
         Arrays.sort(arr);
 
         for (int i = 0; i < length - 1; i++) {
-            if (arr[i] == arr[i + 1]) {
+            if (arr[i] == arr[i + 1]) {//有相等的，则是取完绝对值后的（原数组应该没有重复数字）
                 count++;
                 i++;
             }
@@ -81,4 +82,38 @@ public class Algorithm {
         return count;
     }
 
+    //多路归并排序，使用优先队列多向归并
+    public static void mergeByPQ(Iterator<String>[] streams) {
+        int N = streams.length;
+        IndexMinPQ<String> pq = new IndexMinPQ<>(N);
+
+        for (int i = 0; i < N; i++) {
+            if (streams[i].hasNext())
+                pq.insert(i, streams[i].next());
+        }//初始化优先队列，使其包含了每个非空流的第一个元素
+        while (!pq.isEmpty()) {
+            System.out.print(pq.minKey()+" ");
+            int i = pq.delMin();//删除并获取拥有当前最小元素的流的索引
+            if (streams[i].hasNext()) {//检查最小的元素的流是否还有更多元素
+                pq.insert(i, streams[i].next());
+            }
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        var s = new Scanner(System.in);
+        List<String> list1 = Arrays.asList("a", "e", "i");
+        List<String> list2 = Arrays.asList("b", "f", "j");
+        List<String> list3 = Arrays.asList("c", "g", "k");
+        List<String> list4 = Arrays.asList("d", "h", "l");
+
+        @SuppressWarnings("unchecked")
+        Iterator<String>[] streams = (Iterator<String>[]) new Iterator<?>[4];
+        streams[0] = list1.iterator();
+        streams[1] = list2.iterator();
+        streams[2] = list3.iterator();
+        streams[3] = list4.iterator();
+        mergeByPQ(streams);
+    }
 }

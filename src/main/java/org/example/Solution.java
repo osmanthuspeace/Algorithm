@@ -472,15 +472,51 @@ public class Solution {
         return result;
     }
 
+    //215. 数组中的第K个最大元素
+    public int findKthLargest(int[] nums, int k) {
+        int[] p = new int[k + 1];
+        Arrays.fill(p, Integer.MAX_VALUE);
+        int size = 0;//队列中的元素个数
+        int N = nums.length;
+        //先把前k个元素放进堆里并有序化，建立小根堆
+        for (int i = 0; i < k; i++) {
+            p[++size] = nums[i];
+            swim(p, i + 1);//将原数组索引和队列中的索引对应
+        }
+        //把更大的元素放入堆中
+        for (int i = k; i < N; i++) {
+            if (nums[i] > p[1]) {
+                p[1] = nums[i];
+                sink(p, 1, size);
+            }
+        }
+        for (var i : p) {
+            System.out.println(i);
+        }
+        return p[1];//堆顶的元素是最小的
+    }
+
+    private void swim(int[] p, int k) {
+        while (k > 1 && p[k / 2] > p[k]) {
+            exchange(p, k, k / 2);
+            k /= 2;
+        }
+    }
+
+    private void sink(int[] p, int k, int size) {
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && p[j] > p[j + 1]) j++;
+            if (p[j] < p[k]) exchange(p, j, k);
+            k = j;
+        }
+    }
+
 
     public static void main(String[] args) {
-        int[] aa = new int[]{89, 62, 70, 58, 47, 47, 46, 76, 100, 70};
-        int[] a = new int[]{4, 4, 1, 2, 2, 2};
+        int[] a = new int[]{3, 2, 3, 1, 2, 4, 5, 5, 6};
         var s = new Solution();
-        var list = s.majorityElement2(a, 3).toArray();
-        for (Object o : list) {
-            print(o + " ");
-        }
+        System.out.println("Answer:" + s.findKthLargest(a, 4));
 //        ListNode head = null;
 //        ListNode l = null;
 //        for (int value : a) {

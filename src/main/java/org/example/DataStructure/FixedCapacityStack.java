@@ -3,6 +3,7 @@ package org.example.DataStructure;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * author: osmanthuspeace
@@ -50,20 +51,22 @@ public class FixedCapacityStack<T> implements Iterable<T> {
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        return new ReverseArrayIterator();
+        return new Iterator<>() { //定义一个匿名类要加一对小括号
+            private int i = index;  // Capture the initial state of index
+
+            @Override
+            public boolean hasNext() {
+                return i > 0;
+            }
+
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return stack[--i]; // 这仅仅会改变i的值，不会改变外部类中的字段
+            }
+        };
     }
 
-    private class ReverseArrayIterator implements Iterator<T> {
-        private int i = index;
-
-        @Override
-        public boolean hasNext() {
-            return i > 0;
-        }
-
-        @Override
-        public T next() {
-            return stack[--i];//仅仅会改变i的值，不会改变外部类中的字段
-        }
-    }
 }

@@ -71,6 +71,11 @@ public class MySorts {
         q.BetterQuickSort(a, 0, a.length - 1);
     }
 
+    public static <T extends Comparable<T>> void HeapSort(T[] a) {
+        var h = new MyHeapSort<T>();
+        h.heapSort(a);
+    }
+
     //v<w
     private static <T extends Comparable<T>> boolean less(T v, T w) {//T 表示一个具体的类型，该类型实现了 Comparable<T>，
         return v.compareTo(w) < 0; // 正确且类型安全的调用
