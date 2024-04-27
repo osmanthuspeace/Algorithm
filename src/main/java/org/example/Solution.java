@@ -513,10 +513,65 @@ public class Solution {
     }
 
 
+    //1122. 数组的相对排序
+    public int[] relativeSortArray(int[] arr1, int[] arr2) {
+        int max = 0;
+        var result = new ArrayList<Integer>();
+        for (int value : arr1)
+            if (value > max)
+                max = value;
+        int[] count = new int[max + 1];
+        for (int j : arr1) count[j]++;
+        //以上为计数排序的预处理操作
+        //按相对位置将数放入答案数组中
+        for (int j : arr2) {
+            while (count[j] > 0) {
+                result.add(j);
+                count[j]--;
+            }
+        }
+        //将剩下的元素按照升序放在答案数组的末尾
+        for (int i = 0; i < count.length; i++) {
+            while (count[i] > 0) {
+                result.add(i);
+                count[i]--;
+            }
+        }
+        //将ArrayList转换为int[]
+        int[] resultArray = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            resultArray[i] = result.get(i); // 自动拆箱将Integer转换为int
+        }
+        return resultArray;
+    }
+
+
+    //56. 合并区间
+    public int[][] mergeRanges(int[][] intervals) {
+        if (intervals.length <= 1) return intervals;
+        int[][] result = new int[intervals.length][2];
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));//先按首元素排序
+        result[0] = intervals[0];//初始化为原数组第一项
+        int j = 0;//结果数组的索引，也是一种双指针的思想
+        for (int i = 1; i < intervals.length; i++) {
+            if (result[j][1] >= intervals[i][0]) {//有重叠
+                result[j][1] = Math.max(intervals[i][1], result[j][1]);//防止出现前一个区间把后一个区间完全包住的情况
+            } else {//无重叠
+                j++;
+                result[j] = intervals[i];
+            }
+        }
+        return Arrays.copyOf(result, ++j);//拷贝数组，防止结果的末尾出现空的元素
+    }
+
+
     public static void main(String[] args) {
-        int[] a = new int[]{3, 2, 3, 1, 2, 4, 5, 5, 6};
+        int[][] test = new int[][]{{1, 10}, {2, 3}, {4, 5}, {6, 7}, {8, 9}};
+        int[] a = new int[]{2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19};
+        int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
         var s = new Solution();
-        System.out.println("Answer:" + s.findKthLargest(a, 4));
+        System.out.println(Arrays.deepToString(s.mergeRanges(test)));
+
 //        ListNode head = null;
 //        ListNode l = null;
 //        for (int value : a) {

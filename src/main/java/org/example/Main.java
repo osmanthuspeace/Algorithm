@@ -2,6 +2,7 @@ package org.example;
 
 
 import edu.princeton.cs.algs4.MaxPQ;
+import edu.princeton.cs.algs4.Transaction;
 
 
 import java.io.IOException;
@@ -22,8 +23,9 @@ public class Main {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-        var s = new Integer[]{4, 1, 2, 3, 5, 2, 6};
-        HeapSort(s);
+        var s = new int[]{4, 1, 2, 3, 5, 2, 6};
+        BucketSort(s);
+//        HeapSort(s);
         System.out.println(Arrays.toString(s));
     }
 }
