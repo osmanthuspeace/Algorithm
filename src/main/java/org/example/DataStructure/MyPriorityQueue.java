@@ -15,8 +15,8 @@ public class MyPriorityQueue<Key extends Comparable<Key>> {
     private int size = 0;//队列中的元素个数
     private static final int DEFAULT_SIZE = 11;
 
-    private int[] pq;//在索引优先队列中表示索引
-    private int[] qp;//索引的逆序:pq[qp[i]]=qp[pq[i]]=i
+    private final int[] pq;//在索引优先队列中表示索引
+    private final int[] qp;//索引的逆序:pq[qp[i]]=qp[pq[i]]=i
 
     public MyPriorityQueue() {
         this(DEFAULT_SIZE);

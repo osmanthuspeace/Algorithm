@@ -34,7 +34,7 @@ public class RandomNumbers {
                     );
                     builder.setLength(0); // Clear the builder
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
             }
         }
@@ -47,7 +47,7 @@ public class RandomNumbers {
                     StandardOpenOption.APPEND
             );
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 

@@ -17,6 +17,18 @@ import static edu.princeton.cs.algs4.StdOut.print;
 @SuppressWarnings("unused")
 public class Solution {
 
+    //704:二分查找
+    public int search(int[] nums, int target) {
+        int lo = 0, hi = nums.length - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) / 2;
+            if (nums[mid] < target) lo = mid + 1;
+            else if (nums[mid] > target) hi = mid - 1;
+            else return mid;
+        }
+        return -1;
+    }
+
     //20:匹配括号
     public static boolean isValidParentheses(String s) {
         Stack<Character> parentheses = new Stack<>();
@@ -571,25 +583,6 @@ public class Solution {
         int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
         var s = new Solution();
         System.out.println(Arrays.deepToString(s.mergeRanges(test)));
-
-//        ListNode head = null;
-//        ListNode l = null;
-//        for (int value : a) {
-//            if (head == null) {
-//                head = new ListNode(value);
-//                l = head;
-//            } else {
-//                l.next = new ListNode(value);
-//                l = l.next;
-//            }
-//        }
-//
-//        var result = s.sortList(head);
-//
-//        while (result != null) {
-//            System.out.print(" " + result.val);
-//            result = result.next;
-//        }
 
     }
 
