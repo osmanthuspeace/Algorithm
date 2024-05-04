@@ -1,10 +1,5 @@
 package org.example.Sort;
 
-/**
- * author: osmanthuspeace
- * createTime: 2024/4/18
- */
-
 import edu.princeton.cs.algs4.*;
 
 import java.util.Arrays;

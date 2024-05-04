@@ -1,13 +1,8 @@
 package org.example;
 
-import org.example.DataStructure.MyPriorityQueue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static edu.princeton.cs.algs4.StdOut.print;
 
 /**
  * author: osmanthuspeace
@@ -289,11 +284,6 @@ public class Solution {
         return new int[]{left, right};
     }
 
-    //TODO:46. 全排列
-//    public List<List<Integer>> permute(int[] nums) {
-//
-//    }
-
     //739:单调栈
     public int[] dailyTemperatures(int[] temperatures) {
         var monotone = new Stack<Integer>();//构造单调递增栈
@@ -515,6 +505,7 @@ public class Solution {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void sink(int[] p, int k, int size) {
         while (2 * k <= size) {
             int j = 2 * k;

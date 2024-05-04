@@ -1,10 +1,8 @@
 package org.example.Sort;
 
-import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -13,7 +11,7 @@ import java.util.Collections;
  * createTime: 2024/4/17
  */
 
-@SuppressWarnings({"rawtypes", "unchecked", "MismatchedReadAndWriteOfArray", "unused"})
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class MySorts {
 
 

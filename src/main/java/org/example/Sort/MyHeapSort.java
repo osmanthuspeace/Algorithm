@@ -1,7 +1,5 @@
 package org.example.Sort;
 
-import java.util.PriorityQueue;
-
 /**
  * author: osmanthuspeace
  * createTime: 2024/4/25
@@ -40,6 +38,7 @@ public class MyHeapSort<T extends Comparable<T>> {
         return v.compareTo(w) < 0;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void exchange(T[] a, int i, int j) {
         T t = a[i];
         a[i] = a[j];

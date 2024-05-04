@@ -1,15 +1,13 @@
 package org.example;
 
-import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.IndexMinPQ;
 import edu.princeton.cs.algs4.StdRandom;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static org.example.Utility.FisherYatesShuffle.fisherYatesShuffle;
-
 //Record the study progress of the Algorithm
+@SuppressWarnings("unused")
 public class Algorithm {
 
     //双栈算术表达式求值

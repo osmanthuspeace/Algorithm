@@ -37,6 +37,7 @@ public class MyQuickSort<T extends Comparable<T>> {
     }
 
     //用三向切分优化存在重复数字的输入情况
+    @SuppressWarnings("unused")
     public void QuickSort3Way(T[] a, int lo, int hi) {
         if (lo >= hi) return;
         int lt = lo, i = lo + 1, gt = hi;

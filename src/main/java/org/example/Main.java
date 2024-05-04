@@ -1,11 +1,9 @@
 package org.example;
 
 
-import edu.princeton.cs.algs4.BinarySearchST;
-import edu.princeton.cs.algs4.FrequencyCounter;
 import edu.princeton.cs.algs4.ST;
-import org.example.DataStructure.LinkedListBasedSequentialSearchSymbolTable;
-import org.example.DataStructure.OrderedArrayBasedBinarySearchST;
+import org.example.DataStructure.Search.MyBinarySearchTree;
+import org.example.DataStructure.Search.OrderedArrayBasedBinarySearchST;
 
 import java.io.IOException;
 
@@ -16,8 +14,9 @@ public class Main {
         System.out.println("Hello world!");
         int minLen = 3;
 //        ST<String, Integer> st = new ST<>();
-        OrderedArrayBasedBinarySearchST<String, Integer> st = new OrderedArrayBasedBinarySearchST<>();
+//        OrderedArrayBasedBinarySearchST<String, Integer> st = new OrderedArrayBasedBinarySearchST<>();
 //        LinkedListBasedSequentialSearchSymbolTable<String,Integer> st=new LinkedListBasedSequentialSearchSymbolTable<>();
+        MyBinarySearchTree<String,Integer> st=new MyBinarySearchTree<>();
         String path = "tale.txt";
         try {
             var s = readFileAsString(path);
@@ -42,5 +41,6 @@ public class Main {
         }
         System.out.println(flag + " : " + max);
     }
+
 
 }

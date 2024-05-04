@@ -49,7 +49,7 @@ public class MyPriorityQueue<Key extends Comparable<Key>> {
 //        p[size] = null;
         sink(1);
         p[pq[size + 1]] = null;//消除最后一个元素的引用，防止对象游离
-        qp[pq[size+1]]=-1;//消除最后一个元素的索引
+        qp[pq[size + 1]] = -1;//消除最后一个元素的索引
         return max;
     }
 
