@@ -55,6 +55,18 @@ public class MyBinarySearchTree<Key extends Comparable<Key>, Val> implements Ite
         else return x.val;
     }
 
+    //对于大量的查找操作，使用循环而不是递归有更好的性能，因为不需要额外的栈空间和调用
+    public Val getWithNonRecursion(Key key) {
+        Node x = root;
+        while (x != null) {
+            int cmp = x.key.compareTo(key);
+            if (cmp < 0) x = x.right;
+            else if (cmp > 0) x = x.left;
+            else return x.val;
+        }
+        return null;
+    }
+
     public void put(Key key, Val val) {
         root = put(root, key, val);
     }
@@ -246,4 +258,5 @@ public class MyBinarySearchTree<Key extends Comparable<Key>, Val> implements Ite
             return node.key;
         }
     }
+
 }

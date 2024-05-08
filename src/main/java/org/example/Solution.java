@@ -1,5 +1,6 @@
 package org.example;
 
+import edu.princeton.cs.algs4.RedBlackBST;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -11,6 +12,35 @@ import java.util.*;
 //The solutions of leetcode or luogu
 @SuppressWarnings("unused")
 public class Solution {
+
+    @SuppressWarnings("DataFlowIssue")
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int top = 0;
+        int bottom = m - 1;
+        int left = 0;
+        int right = n - 1;//看作四层逐渐收缩的墙
+        var result = new ArrayList<Integer>();
+        while (top <= bottom && left <= right) {
+            for (int i = left; i <= right; i++)
+                result.add(matrix[top][i]);
+            top++;
+            for (int i = top; i <= bottom; i++)
+                result.add(matrix[i][right]);
+            right--;
+            if (bottom < top) break;//防止上面两个for循环之后，bottom已经超过top但是还没有结束while循环的情况
+            for (int i = right; i >= left; i--)
+                result.add(matrix[bottom][i]);
+            bottom--;
+            if (right < left) break;
+            for (int i = bottom; i >= top; i--)
+                result.add(matrix[i][left]);
+            left++;
+        }
+        return result;
+    }
+
 
     //704:二分查找
     public int search(int[] nums, int target) {
@@ -569,11 +599,11 @@ public class Solution {
 
 
     public static void main(String[] args) {
-        int[][] test = new int[][]{{1, 10}, {2, 3}, {4, 5}, {6, 7}, {8, 9}};
+        int[][] test = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
         int[] a = new int[]{2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19};
         int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
         var s = new Solution();
-        System.out.println(Arrays.deepToString(s.mergeRanges(test)));
+        System.out.println(s.spiralOrder(test));
 
     }
 
