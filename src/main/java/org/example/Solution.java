@@ -1,6 +1,5 @@
 package org.example;
 
-import edu.princeton.cs.algs4.RedBlackBST;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -597,13 +596,55 @@ public class Solution {
         return Arrays.copyOf(result, ++j);//拷贝数组，防止结果的末尾出现空的元素
     }
 
+    //41. 缺失的第一个正数
+    public int firstMissingPositive(int[] nums) {
+        //要找到一个数组中没有出现的最小的正整数，由于数组的索引是从0开始的，所以答案一定在0~nums.length+1中
+        //直接用哈希表，空间复杂度太大
+        //本想拷贝一个下标从一开始的数组，也会浪费空间
+        //只能原地哈希，利用答案一定在0~nums.length+1中的性质，将每一个num放到num-1的位置
+        for (int i = 0; i < nums.length; i++) {
+            var index = nums[i] - 1;
+            if (index == i) continue;//防止本来就是有序的
+            while (index >= 0 && index < nums.length) {
+                if (nums[index] == nums[i]) break;//防止重复的数字
+                var temp = nums[index];
+                nums[index] = nums[i];
+                nums[i] = temp;
+                index = nums[i] - 1;
+            }
+        }
+        System.gc();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        return nums.length + 1;
+    }
+
+    //287. 寻找重复数
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        int index;//只要获取原地哈希的索引，不用移动数组元素
+        for (int i = 0; i < nums.length; i++) {
+            index = Math.abs(nums[i]) - 1;
+            if (nums[index] < 0) {//说明之前有一次变号的操作
+                res.add(index + 1);
+            } else {
+                nums[index] = -nums[index];
+            }
+        }
+        return res;
+    }
+
 
     public static void main(String[] args) {
         int[][] test = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
         int[] a = new int[]{2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19};
         int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
+        int[] a3 = new int[]{2, 1};
         var s = new Solution();
-        System.out.println(s.spiralOrder(test));
+        System.out.println(s.findDuplicates(a3));
 
     }
 

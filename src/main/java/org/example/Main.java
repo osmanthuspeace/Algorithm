@@ -1,10 +1,7 @@
 package org.example;
 
 
-import edu.princeton.cs.algs4.RedBlackBST;
 import edu.princeton.cs.algs4.ST;
-import org.example.DataStructure.Search.MyBinarySearchTree;
-import org.example.DataStructure.Search.OrderedArrayBasedBinarySearchST;
 
 import java.io.IOException;
 
@@ -19,6 +16,9 @@ public class Main {
 //        LinkedListBasedSequentialSearchSymbolTable<String,Integer> st=new LinkedListBasedSequentialSearchSymbolTable<>();
 //        MyBinarySearchTree<String,Integer> st=new MyBinarySearchTree<>();
         String path = "tale.txt";
+        double f=1.0;
+        System.out.println(Double.hashCode(f));
+
         try {
             var s = readFileAsString(path);
             String[] words = s.split("\\s+");
@@ -41,5 +41,8 @@ public class Main {
             System.out.println(word + " : " + st.get(word));
         }
         System.out.println(flag + " : " + max);
+
+        int a = 30;
+        System.out.println(a >>> 2);
     }
 }

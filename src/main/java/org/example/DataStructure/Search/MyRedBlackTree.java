@@ -80,9 +80,6 @@ public class MyRedBlackTree<Key extends Comparable<Key>, Val> {
         即，在删除过程的最后，我们需要最终得到一个含有最小键的3-节点或4-节点（即被删节点无子节点，且被删结点为红色），然后直接删除最小键
         为此，要尽可能的消除2-节点
 
-
-
-
      */
     public void deleteMin() {
         if (!isRed(root.left) && !isRed(root.right)) {
