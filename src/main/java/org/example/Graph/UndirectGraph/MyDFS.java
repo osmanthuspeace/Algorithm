@@ -1,16 +1,18 @@
-package org.example.Graph;
+package org.example.Graph.UndirectGraph;
 
 /**
  * author: osmanthuspeace
  * createTime: 2024/5/15
  */
+
+//只解决了图中的两个顶点是否联通的问题
 public class MyDFS {
     private final boolean[] marked;
     private int count;
 
     public MyDFS(MyGraph G, int s) {
         marked = new boolean[G.V()];
-        dfs(G, s);
+        dfs(G, s);//以s为起点进行搜索
     }
 
     private void dfs(MyGraph G, int v) {
@@ -24,7 +26,7 @@ public class MyDFS {
     }
 
     public boolean marked(int v) {
-        return marked[v];//v是否于s联通
+        return marked[v];//v是否与s联通
     }
 
     public int count() {

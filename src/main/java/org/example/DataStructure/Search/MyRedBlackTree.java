@@ -265,7 +265,7 @@ public class MyRedBlackTree<Key extends Comparable<Key>, Val> {
         } else {
             StringBuilder output = new StringBuilder();
             buildTreeString(root, "", true, output);
-            System.out.println(output.toString());
+            System.out.println(output);
         }
     }
 

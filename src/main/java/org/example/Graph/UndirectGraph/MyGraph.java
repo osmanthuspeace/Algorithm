@@ -1,4 +1,4 @@
-package org.example.Graph;
+package org.example.Graph.UndirectGraph;
 
 import edu.princeton.cs.algs4.Graph;
 
@@ -87,7 +87,6 @@ public class MyGraph extends Graph {
         }
         return s.toString();
     }
-
 }
 
 

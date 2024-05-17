@@ -1,4 +1,4 @@
-package org.example.Graph;
+package org.example.Graph.UndirectGraph;
 
 import edu.princeton.cs.algs4.DepthFirstSearch;
 

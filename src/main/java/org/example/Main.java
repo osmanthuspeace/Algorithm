@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.ST;
 
 import java.io.IOException;
 
-import static org.example.Utility.ReadFileAsString.readFileAsString;
+import static org.example.Utility.ReadFile.readFileAsString;
 
 public class Main {
     public static void main(String[] args) {

@@ -187,7 +187,6 @@ public class Solution {
             }
         }
         return UF.count();
-
     }
 
     public static class UnionFind {
@@ -233,7 +232,6 @@ public class Solution {
             return p;
         }
     }
-
 
     //75:三向切分快速排序
     public void sortColors(int[] nums) {
@@ -637,15 +635,140 @@ public class Solution {
         return res;
     }
 
+    private class Graph {
+        private final int V;
+        private int E;
+        private final List<Integer>[] adj;
+        private final boolean[] marked;
+        private int ccCount;//完全联通分量的个数
+        private int nodeCount;//节点的个数
+        private int edgeCount;
+
+        public Graph(int V) {
+            this.V = V;
+            this.E = 0;
+            this.ccCount = 0;
+            this.nodeCount = 0;
+            this.edgeCount = 0;
+            marked = new boolean[V];
+            adj = new List[V];
+            for (int i = 0; i < V; i++) {
+                adj[i] = new ArrayList<>();
+            }
+        }
+
+        public int init() {
+            for (int v = 0; v < V; v++) {
+                if (!marked[v]) {
+                    nodeCount = 0;
+                    edgeCount = 0;
+                    dfs(v);
+                    edgeCount /= 2;
+//                    System.out.printf("节点数：%d，边数：%d", nodeCount, edgeCount);
+                    System.out.println();
+                    if (edgeCount == nodeCount * (nodeCount - 1) / 2) {
+                        ccCount++;
+                    }
+                }
+            }
+            return ccCount;
+        }
+
+        public void addEdge(int v, int w) {
+            adj[v].add(w);
+            adj[w].add(v);
+            E++;
+        }
+
+        //与节点v邻接的节点
+        private List<Integer> adj(int v) {
+            return adj[v];
+        }
+
+        public void dfs(int cur) {
+            nodeCount++;
+            marked[cur] = true;
+            edgeCount += adj(cur).size();
+            for (int w : adj(cur)) {
+                if (!marked[w]) {
+                    dfs(w);
+                }
+            }
+        }
+
+        public boolean hasPath(int target) {
+            return marked[target];
+        }
+    }
+
+    //2685. 统计完全连通分量的数量
+    public int countCompleteComponents(int n, int[][] edges) {
+        var g = new Graph(n);
+        for (int[] ints : edges) {
+            g.addEdge(ints[0], ints[1]);
+        }
+        return g.init();
+    }
+
+    //面试题 04.01. 节点间通路
+    public boolean findWhetherExistsPath(int n, int[][] graph, int start, int target) {
+        var g = new Graph(n);
+        for (int[] ints : graph) {
+            g.addEdge(ints[0], ints[1]);
+        }
+        g.dfs(start);
+        return g.hasPath(target);
+    }
+
+    //994. 腐烂的橘子
+    public int orangesRotting(int[][] grid) {
+        int[][] dis = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+        int n = grid.length;
+        int m = grid[0].length;
+        int time = 0;
+        int depth = 0;
+        var q = new ArrayDeque<int[]>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 2) {
+                    q.add(new int[]{i, j, 0});//要记录宽搜的深度，需要在每个节点上新添加一个信息
+                }
+            }
+        }
+        while (!q.isEmpty()) {
+            var cur = q.pollFirst();
+            depth = cur[2];
+            for (int i = 0; i < 4; i++) {
+                var newX = cur[0] + dis[i][0];
+                var newY = cur[1] + dis[i][1];
+                if (newX >= 0 && newX < n && newY >= 0 && newY < m && grid[newX][newY] == 1) {
+                    q.add(new int[]{newX, newY, depth + 1});
+                    grid[newX][newY] = 2;
+                }
+            }
+        }
+        for (int[] ints : grid) {
+            for (int j = 0; j < m; j++) {
+                if (ints[j] == 1) {
+                    return -1;
+                }
+            }
+        }
+        return depth;
+    }
+
 
     public static void main(String[] args) {
         int[][] test = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
         int[] a = new int[]{2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19};
         int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
         int[] a3 = new int[]{2, 1};
+        int[][] edges = {
+                {2, 1, 1}, {1, 1, 0}, {0, 1, 1}
+        };
+
         var s = new Solution();
-        System.out.println(s.findDuplicates(a3));
-
+        var res = s.orangesRotting(edges);
+        System.out.println(res);
     }
-
 }
