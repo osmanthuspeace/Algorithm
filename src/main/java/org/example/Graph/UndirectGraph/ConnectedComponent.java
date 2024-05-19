@@ -18,7 +18,7 @@ public class ConnectedComponent {
         this.count = 0;
         marked = new boolean[G.V()];
         id = new int[G.V()];
-        for (int s = 0; s < G.V(); s++) {
+        for (int s = 0; s < G.V(); s++) {//遍历每一个顶点，寻找可能的联通分量的起点
             if (!marked[s]) {
                 dfs(G, s);
                 count++;

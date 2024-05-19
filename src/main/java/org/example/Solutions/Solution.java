@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Solutions;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -9,8 +9,67 @@ import java.util.*;
  * createTime: 2024/4/17
  */
 //The solutions of leetcode or luogu
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked", "InnerClassMayBeStatic"})
 public class Solution {
+
+    private boolean hasCycleInSolutionNamedCanFinish = false;
+
+    //20:匹配括号
+    public static boolean isValidParentheses(String s) {
+        Stack<Character> parentheses = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            var parenthesis = s.charAt(i);
+            if (parenthesis == '(' || parenthesis == '[' || parenthesis == '{') parentheses.push(parenthesis);
+            else {
+                if (parentheses.isEmpty()) return false;
+                char top = parentheses.pop();
+                if (top == '{' && parenthesis != '}') return false;
+                if (top == '[' && parenthesis != ']') return false;
+                if (top == '(' && parenthesis != ')') return false;
+            }
+        }
+        return parentheses.isEmpty();
+    }
+
+    //P1996:约瑟夫问题
+    public static void Josephus(int n, int m) {
+        var circular = new CircularLinkedList(n);
+        circular.pop(m);
+    }
+
+    private static @NotNull List<Integer> getResult(int[] nums, int k, int[] major) {
+        Map<Integer, Integer> actualCounts = new HashMap<>();
+        //检查major中是不是都是满足出现次数大于n/k的元素
+        for (int num : nums) {
+            for (int candidate : major) {
+                if (num == candidate) {
+                    actualCounts.put(num, actualCounts.getOrDefault(num, 0) + 1);
+                    break;
+                }
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        final int threshold = nums.length / k;
+        for (Map.Entry<Integer, Integer> entry : actualCounts.entrySet()) {
+            if (entry.getValue() > threshold) {
+                result.add(entry.getKey());
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[][] test = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
+        int[] a = new int[]{2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19};
+        int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
+        int[] a3 = new int[]{2, 1};
+        int[][] edges = {{1, 0}};
+
+        var s = new Solution();
+        var res = s.canFinish(2, edges);
+        System.out.println(res);
+    }
 
     @SuppressWarnings("DataFlowIssue")
     public List<Integer> spiralOrder(int[][] matrix) {
@@ -40,7 +99,6 @@ public class Solution {
         return result;
     }
 
-
     //704:二分查找
     public int search(int[] nums, int target) {
         int lo = 0, hi = nums.length - 1;
@@ -52,126 +110,6 @@ public class Solution {
         }
         return -1;
     }
-
-    //20:匹配括号
-    public static boolean isValidParentheses(String s) {
-        Stack<Character> parentheses = new Stack<>();
-        for (int i = 0; i < s.length(); i++) {
-            var parenthesis = s.charAt(i);
-            if (parenthesis == '(' || parenthesis == '[' || parenthesis == '{')
-                parentheses.push(parenthesis);
-            else {
-                if (parentheses.isEmpty())
-                    return false;
-                char top = parentheses.pop();
-                if (top == '{' && parenthesis != '}') return false;
-                if (top == '[' && parenthesis != ']') return false;
-                if (top == '(' && parenthesis != ')') return false;
-            }
-        }
-        return parentheses.isEmpty();
-    }
-
-
-    //232:用栈实现队列
-    public static class MyQueue {
-        Stack<Integer> tail;
-        Stack<Integer> head;
-
-        public MyQueue() {
-            this.head = new Stack<>();
-            this.tail = new Stack<>();
-        }
-
-        public void push(int x) {
-            while (!head.empty()) {
-                tail.push(head.pop());
-            }
-            tail.push(x);
-        }
-
-        public int pop() {
-            while (!tail.empty()) {
-                head.push(tail.pop());
-            }
-            return head.pop();
-        }
-
-        public int peek() {
-            while (!tail.empty()) {
-                head.push(tail.pop());
-            }
-            var peek = head.pop();
-            head.push(peek);
-            return peek;
-        }
-
-        public boolean empty() {
-            return head.isEmpty() && tail.isEmpty();
-        }
-    }
-
-
-    private static class Node {
-        int current;
-        Node next;
-
-        public Node() {
-        }
-
-        public Node(int current, Node next) {
-            this.current = current;
-            this.next = next;
-        }
-    }
-
-    private static class CircularLinkedList {
-        Node first = new Node(1, null);
-        private int capacity;
-
-        public CircularLinkedList(int n) {
-            this.capacity = n;
-            Node pre = first;
-            for (int i = 2; i <= n; i++) {
-                Node newNode = new Node(i, null);
-                pre.next = newNode;//让pre节点的下一个节点成为newNode
-                pre = newNode;
-            }
-            pre.next = first;
-        }
-
-        public void printElement() {
-            Node cur = first;
-            for (int i = 0; i < capacity; i++) {
-                System.out.println(cur.current);
-                cur = cur.next;
-            }
-        }
-
-        public void pop(int counter) {
-            Node cur = first;
-            while (!isEmpty()) {
-                for (int i = 1; i < counter - 1; i++) {
-                    cur = cur.next;
-                }
-                System.out.print(cur.next.current + " ");
-                cur.next = cur.next.next;
-                cur = cur.next;
-                capacity--;
-            }
-        }
-
-        private boolean isEmpty() {
-            return capacity == 0;
-        }
-    }
-
-    //P1996:约瑟夫问题
-    public static void Josephus(int n, int m) {
-        var circular = new CircularLinkedList(n);
-        circular.pop(m);
-    }
-
 
     //547:动态连通性,并查集
     public int findCircleNum(int[][] isConnected) {
@@ -187,50 +125,6 @@ public class Solution {
             }
         }
         return UF.count();
-    }
-
-    public static class UnionFind {
-        private final int[] parent;
-        private int count;
-        private final int[] size;
-
-        public UnionFind(int N) {
-
-            this.count = N;
-            this.parent = new int[N];
-            this.size = new int[N];
-            for (int i = 0; i < N; i++) {
-                this.parent[i] = i;
-                this.size[i] = 1;
-            }
-        }
-
-        public int count() {
-            return this.count;
-        }
-
-        public void union(int p, int q) {
-
-            int pRoot = find(p);
-            int qRoot = find(q);
-            if (pRoot == qRoot) return;
-            if (size[pRoot] > size[qRoot]) {
-                parent[qRoot] = pRoot;
-                size[pRoot] += size[qRoot];
-            } else {
-                parent[pRoot] = qRoot;
-                size[qRoot] += size[pRoot];
-            }
-            count--;
-        }
-
-        //断言p是合法的
-        public int find(int p) {
-            while (p != parent[p]) {
-                p = parent[p];
-            }
-            return p;
-        }
     }
 
     //75:三向切分快速排序
@@ -328,23 +222,6 @@ public class Solution {
             }
         }
         return result;
-    }
-
-    public static class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
     }
 
     //148. 排序链表
@@ -479,28 +356,6 @@ public class Solution {
         return getResult(nums, k, major);
     }
 
-    private static @NotNull List<Integer> getResult(int[] nums, int k, int[] major) {
-        Map<Integer, Integer> actualCounts = new HashMap<>();
-        //检查major中是不是都是满足出现次数大于n/k的元素
-        for (int num : nums) {
-            for (int candidate : major) {
-                if (num == candidate) {
-                    actualCounts.put(num, actualCounts.getOrDefault(num, 0) + 1);
-                    break;
-                }
-            }
-        }
-
-        List<Integer> result = new ArrayList<>();
-        final int threshold = nums.length / k;
-        for (Map.Entry<Integer, Integer> entry : actualCounts.entrySet()) {
-            if (entry.getValue() > threshold) {
-                result.add(entry.getKey());
-            }
-        }
-        return result;
-    }
-
     //215. 数组中的第K个最大元素
     public int findKthLargest(int[] nums, int k) {
         int[] p = new int[k + 1];
@@ -542,14 +397,12 @@ public class Solution {
         }
     }
 
-
     //1122. 数组的相对排序
     public int[] relativeSortArray(int[] arr1, int[] arr2) {
         int max = 0;
         var result = new ArrayList<Integer>();
         for (int value : arr1)
-            if (value > max)
-                max = value;
+            if (value > max) max = value;
         int[] count = new int[max + 1];
         for (int j : arr1) count[j]++;
         //以上为计数排序的预处理操作
@@ -574,7 +427,6 @@ public class Solution {
         }
         return resultArray;
     }
-
 
     //56. 合并区间
     public int[][] mergeRanges(int[][] intervals) {
@@ -635,11 +487,296 @@ public class Solution {
         return res;
     }
 
+    //2685. 统计完全连通分量的数量
+    public int countCompleteComponents(int n, int[][] edges) {
+        var g = new Graph(n);
+        for (int[] ints : edges) {
+            g.addEdge(ints[0], ints[1]);
+        }
+        return g.init();
+    }
+
+    //面试题 04.01. 节点间通路
+    public boolean findWhetherExistsPath(int n, int[][] graph, int start, int target) {
+        var g = new Graph(n);
+        for (int[] ints : graph) {
+            g.addEdge(ints[0], ints[1]);
+        }
+        g.dfs(start);
+        return g.hasPath(target);
+    }
+
+    //994. 腐烂的橘子
+    public int orangesRotting(int[][] grid) {
+        int[][] dis = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+        int n = grid.length;
+        int m = grid[0].length;
+        int time = 0;
+        int depth = 0;
+        var q = new ArrayDeque<int[]>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 2) {
+                    q.add(new int[]{i, j, 0});//要记录宽搜的深度，需要在每个节点上新添加一个信息
+                }
+            }
+        }
+        while (!q.isEmpty()) {
+            var cur = q.pollFirst();
+            depth = cur[2];
+            for (int i = 0; i < 4; i++) {
+                var newX = cur[0] + dis[i][0];
+                var newY = cur[1] + dis[i][1];
+                if (newX >= 0 && newX < n && newY >= 0 && newY < m && grid[newX][newY] == 1) {
+                    q.add(new int[]{newX, newY, depth + 1});
+                    grid[newX][newY] = 2;
+                }
+            }
+        }
+        for (int[] ints : grid) {
+            for (int j = 0; j < m; j++) {
+                if (ints[j] == 1) {
+                    return -1;
+                }
+            }
+        }
+        return depth;
+    }
+
+    //207. 课程表
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        var adj = new ArrayList[numCourses];
+        var marked = new boolean[numCourses];
+        var onStack = new boolean[numCourses];
+        for (int i = 0; i < adj.length; i++) {
+            adj[i] = new ArrayList<Integer>();
+        }
+        for (var pre : prerequisites) {
+            adj[pre[0]].add(pre[1]);
+        }
+        for (int v = 0; v < numCourses; v++) {
+            if (!marked[v]) {
+                dfs(v, adj, marked, onStack);
+            }
+        }
+        return !hasCycleInSolutionNamedCanFinish;
+    }
+
+    private void dfs(int cur, ArrayList<Integer>[] adj, boolean[] marked, boolean[] onStack) {
+        marked[cur] = true;
+        onStack[cur] = true;
+        for (int v : adj[cur]) {
+            if (hasCycleInSolutionNamedCanFinish) {
+                return;
+            } else if (!marked[v]) {
+                dfs(v, adj, marked, onStack);
+            } else if (onStack[v]) {
+                hasCycleInSolutionNamedCanFinish = true;
+                return;
+            }
+        }
+        onStack[cur] = false;
+    }
+
+    //210. 课程表 II
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        var adj = (ArrayList<Integer>[]) new ArrayList[numCourses];
+        var inDegree = new int[numCourses];
+        var queue = new ArrayDeque<Integer>();
+        var result = new ArrayList<Integer>();
+        for (int i = 0; i < adj.length; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        for (var pre : prerequisites) {
+            adj[pre[1]].add(pre[0]);//根据题目中的意思，应该是pre[1]->pre[0]
+            inDegree[pre[0]]++;
+        }
+        for (int v = 0; v < adj.length; v++) {
+            if (inDegree[v] == 0) {
+                queue.offer(v);
+            }
+        }
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            result.add(cur);
+            count++;
+            for (int v : adj[cur]) {
+                inDegree[v]--;
+                if (inDegree[v] == 0) {
+                    queue.offer(v);
+                }
+            }
+        }
+        if (count != adj.length) {
+            return new int[0];
+        } else {
+            int[] intArray = new int[result.size()];
+            for (int i = 0; i < result.size(); i++) {
+                intArray[i] = result.get(i);
+            }
+            return intArray;
+        }
+    }
+
+    //232:用栈实现队列
+    public static class MyQueue {
+        Stack<Integer> tail;
+        Stack<Integer> head;
+
+        public MyQueue() {
+            this.head = new Stack<>();
+            this.tail = new Stack<>();
+        }
+
+        public void push(int x) {
+            while (!head.empty()) {
+                tail.push(head.pop());
+            }
+            tail.push(x);
+        }
+
+        public int pop() {
+            while (!tail.empty()) {
+                head.push(tail.pop());
+            }
+            return head.pop();
+        }
+
+        public int peek() {
+            while (!tail.empty()) {
+                head.push(tail.pop());
+            }
+            var peek = head.pop();
+            head.push(peek);
+            return peek;
+        }
+
+        public boolean empty() {
+            return head.isEmpty() && tail.isEmpty();
+        }
+    }
+
+    private static class Node {
+        int current;
+        Node next;
+
+        public Node() {
+        }
+
+        public Node(int current, Node next) {
+            this.current = current;
+            this.next = next;
+        }
+    }
+
+    private static class CircularLinkedList {
+        Node first = new Node(1, null);
+        private int capacity;
+
+        public CircularLinkedList(int n) {
+            this.capacity = n;
+            Node pre = first;
+            for (int i = 2; i <= n; i++) {
+                Node newNode = new Node(i, null);
+                pre.next = newNode;//让pre节点的下一个节点成为newNode
+                pre = newNode;
+            }
+            pre.next = first;
+        }
+
+        public void printElement() {
+            Node cur = first;
+            for (int i = 0; i < capacity; i++) {
+                System.out.println(cur.current);
+                cur = cur.next;
+            }
+        }
+
+        public void pop(int counter) {
+            Node cur = first;
+            while (!isEmpty()) {
+                for (int i = 1; i < counter - 1; i++) {
+                    cur = cur.next;
+                }
+                System.out.print(cur.next.current + " ");
+                cur.next = cur.next.next;
+                cur = cur.next;
+                capacity--;
+            }
+        }
+
+        private boolean isEmpty() {
+            return capacity == 0;
+        }
+    }
+
+    public static class UnionFind {
+        private final int[] parent;
+        private final int[] size;
+        private int count;
+
+        public UnionFind(int N) {
+
+            this.count = N;
+            this.parent = new int[N];
+            this.size = new int[N];
+            for (int i = 0; i < N; i++) {
+                this.parent[i] = i;
+                this.size[i] = 1;
+            }
+        }
+
+        public int count() {
+            return this.count;
+        }
+
+        public void union(int p, int q) {
+
+            int pRoot = find(p);
+            int qRoot = find(q);
+            if (pRoot == qRoot) return;
+            if (size[pRoot] > size[qRoot]) {
+                parent[qRoot] = pRoot;
+                size[pRoot] += size[qRoot];
+            } else {
+                parent[pRoot] = qRoot;
+                size[qRoot] += size[pRoot];
+            }
+            count--;
+        }
+
+        //断言p是合法的
+        public int find(int p) {
+            while (p != parent[p]) {
+                p = parent[p];
+            }
+            return p;
+        }
+    }
+
+    public static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
     private class Graph {
         private final int V;
-        private int E;
         private final List<Integer>[] adj;
         private final boolean[] marked;
+        private int E;
         private int ccCount;//完全联通分量的个数
         private int nodeCount;//节点的个数
         private int edgeCount;
@@ -699,76 +836,5 @@ public class Solution {
         public boolean hasPath(int target) {
             return marked[target];
         }
-    }
-
-    //2685. 统计完全连通分量的数量
-    public int countCompleteComponents(int n, int[][] edges) {
-        var g = new Graph(n);
-        for (int[] ints : edges) {
-            g.addEdge(ints[0], ints[1]);
-        }
-        return g.init();
-    }
-
-    //面试题 04.01. 节点间通路
-    public boolean findWhetherExistsPath(int n, int[][] graph, int start, int target) {
-        var g = new Graph(n);
-        for (int[] ints : graph) {
-            g.addEdge(ints[0], ints[1]);
-        }
-        g.dfs(start);
-        return g.hasPath(target);
-    }
-
-    //994. 腐烂的橘子
-    public int orangesRotting(int[][] grid) {
-        int[][] dis = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
-        int n = grid.length;
-        int m = grid[0].length;
-        int time = 0;
-        int depth = 0;
-        var q = new ArrayDeque<int[]>();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (grid[i][j] == 2) {
-                    q.add(new int[]{i, j, 0});//要记录宽搜的深度，需要在每个节点上新添加一个信息
-                }
-            }
-        }
-        while (!q.isEmpty()) {
-            var cur = q.pollFirst();
-            depth = cur[2];
-            for (int i = 0; i < 4; i++) {
-                var newX = cur[0] + dis[i][0];
-                var newY = cur[1] + dis[i][1];
-                if (newX >= 0 && newX < n && newY >= 0 && newY < m && grid[newX][newY] == 1) {
-                    q.add(new int[]{newX, newY, depth + 1});
-                    grid[newX][newY] = 2;
-                }
-            }
-        }
-        for (int[] ints : grid) {
-            for (int j = 0; j < m; j++) {
-                if (ints[j] == 1) {
-                    return -1;
-                }
-            }
-        }
-        return depth;
-    }
-
-
-    public static void main(String[] args) {
-        int[][] test = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
-        int[] a = new int[]{2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19};
-        int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
-        int[] a3 = new int[]{2, 1};
-        int[][] edges = {
-                {2, 1, 1}, {1, 1, 0}, {0, 1, 1}
-        };
-
-        var s = new Solution();
-        var res = s.orangesRotting(edges);
-        System.out.println(res);
     }
 }
