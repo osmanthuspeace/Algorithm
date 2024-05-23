@@ -12,7 +12,7 @@ public class DFOrder {
     private final boolean[] marked;
     private final Queue<Integer> pre;//所有顶点的前序排列，即dfs()调用的顺序
     private final Queue<Integer> post;//所有顶点的后序排列，即dfs()调用完成（顶点遍历完成）的顺序
-    private final Stack<Integer> reversePost;//逆后序排列
+    private final Stack<Integer> reversePost;//逆后序排列（拓扑序）
 
     public DFOrder(DirectGraph G) {
         marked = new boolean[G.V()];

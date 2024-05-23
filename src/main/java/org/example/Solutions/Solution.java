@@ -14,63 +14,6 @@ public class Solution {
 
     private boolean hasCycleInSolutionNamedCanFinish = false;
 
-    //20:匹配括号
-    public static boolean isValidParentheses(String s) {
-        Stack<Character> parentheses = new Stack<>();
-        for (int i = 0; i < s.length(); i++) {
-            var parenthesis = s.charAt(i);
-            if (parenthesis == '(' || parenthesis == '[' || parenthesis == '{') parentheses.push(parenthesis);
-            else {
-                if (parentheses.isEmpty()) return false;
-                char top = parentheses.pop();
-                if (top == '{' && parenthesis != '}') return false;
-                if (top == '[' && parenthesis != ']') return false;
-                if (top == '(' && parenthesis != ')') return false;
-            }
-        }
-        return parentheses.isEmpty();
-    }
-
-    //P1996:约瑟夫问题
-    public static void Josephus(int n, int m) {
-        var circular = new CircularLinkedList(n);
-        circular.pop(m);
-    }
-
-    private static @NotNull List<Integer> getResult(int[] nums, int k, int[] major) {
-        Map<Integer, Integer> actualCounts = new HashMap<>();
-        //检查major中是不是都是满足出现次数大于n/k的元素
-        for (int num : nums) {
-            for (int candidate : major) {
-                if (num == candidate) {
-                    actualCounts.put(num, actualCounts.getOrDefault(num, 0) + 1);
-                    break;
-                }
-            }
-        }
-
-        List<Integer> result = new ArrayList<>();
-        final int threshold = nums.length / k;
-        for (Map.Entry<Integer, Integer> entry : actualCounts.entrySet()) {
-            if (entry.getValue() > threshold) {
-                result.add(entry.getKey());
-            }
-        }
-        return result;
-    }
-
-    public static void main(String[] args) {
-        int[][] test = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
-        int[] a = new int[]{2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19};
-        int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
-        int[] a3 = new int[]{2, 1};
-        int[][] edges = {{1, 0}};
-
-        var s = new Solution();
-        var res = s.canFinish(2, edges);
-        System.out.println(res);
-    }
-
     @SuppressWarnings("DataFlowIssue")
     public List<Integer> spiralOrder(int[][] matrix) {
         int m = matrix.length;
@@ -506,7 +449,7 @@ public class Solution {
         return g.hasPath(target);
     }
 
-    //994. 腐烂的橘子
+    //994. 腐烂的橘子，宽搜
     public int orangesRotting(int[][] grid) {
         int[][] dis = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
         int n = grid.length;
@@ -578,7 +521,7 @@ public class Solution {
         onStack[cur] = false;
     }
 
-    //210. 课程表 II
+    //210. 课程表 II，拓扑排序
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         var adj = (ArrayList<Integer>[]) new ArrayList[numCourses];
         var inDegree = new int[numCourses];
@@ -617,6 +560,63 @@ public class Solution {
             }
             return intArray;
         }
+    }
+
+    //20:匹配括号
+    public static boolean isValidParentheses(String s) {
+        Stack<Character> parentheses = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            var parenthesis = s.charAt(i);
+            if (parenthesis == '(' || parenthesis == '[' || parenthesis == '{') parentheses.push(parenthesis);
+            else {
+                if (parentheses.isEmpty()) return false;
+                char top = parentheses.pop();
+                if (top == '{' && parenthesis != '}') return false;
+                if (top == '[' && parenthesis != ']') return false;
+                if (top == '(' && parenthesis != ')') return false;
+            }
+        }
+        return parentheses.isEmpty();
+    }
+
+    //P1996:约瑟夫问题
+    public static void Josephus(int n, int m) {
+        var circular = new CircularLinkedList(n);
+        circular.pop(m);
+    }
+
+    private static @NotNull List<Integer> getResult(int[] nums, int k, int[] major) {
+        Map<Integer, Integer> actualCounts = new HashMap<>();
+        //检查major中是不是都是满足出现次数大于n/k的元素
+        for (int num : nums) {
+            for (int candidate : major) {
+                if (num == candidate) {
+                    actualCounts.put(num, actualCounts.getOrDefault(num, 0) + 1);
+                    break;
+                }
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        final int threshold = nums.length / k;
+        for (Map.Entry<Integer, Integer> entry : actualCounts.entrySet()) {
+            if (entry.getValue() > threshold) {
+                result.add(entry.getKey());
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[][] test = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
+        int[] a = new int[]{2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19};
+        int[] a2 = new int[]{2, 1, 4, 3, 9, 6};
+        int[] a3 = new int[]{2, 1};
+        int[][] edges = {{1, 0}};
+
+        var s = new Solution();
+        var res = s.canFinish(2, edges);
+        System.out.println(res);
     }
 
     //232:用栈实现队列

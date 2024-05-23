@@ -14,7 +14,6 @@ import java.util.Collections;
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class MySorts {
 
-
     //基本类型的包装类基本都实现了Comparable<T>接口
     public static <T extends Comparable<T>> void InsertSort(T[] a) {
         var length = a.length;

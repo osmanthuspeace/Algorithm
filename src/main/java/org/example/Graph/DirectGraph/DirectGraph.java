@@ -7,6 +7,7 @@ import java.util.List;
  * author: osmanthuspeace
  * createTime: 2024/5/19
  */
+@SuppressWarnings("unchecked")
 public class DirectGraph {
     private final int V; //顶点数目
     private final List<Integer>[] adjacency; //邻接表

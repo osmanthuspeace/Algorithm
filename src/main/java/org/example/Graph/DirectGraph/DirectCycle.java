@@ -14,7 +14,6 @@ public class DirectCycle {
     private final boolean[] onStack;//(递归调用栈)上的所有顶点
     private Stack<Integer> cycle;//一个有向环中的所有顶点（如果存在）
 
-
     public DirectCycle(DirectGraph G) {
         marked = new boolean[G.V()];
         edgeTo = new int[G.V()];

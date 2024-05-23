@@ -41,9 +41,9 @@ public class PopularTopologicalSort {
             result.add(cur);
             count++;
             for (int v : G.adj(cur)) {
-                inDegree[v]--;
+                inDegree[v]--;//当cur被弹出队列，相当于v的父节点少了一个，入度减1
                 if (inDegree[v] == 0) {
-                    queue.offer(v);
+                    queue.offer(v);//将入度为0的节点加入队列
                 }
             }
         }

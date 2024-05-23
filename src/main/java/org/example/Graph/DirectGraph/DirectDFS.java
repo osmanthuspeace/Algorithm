@@ -5,9 +5,9 @@ package org.example.Graph.DirectGraph;
  * createTime: 2024/5/19
  */
 public class DirectDFS {
-    private boolean[] marked;
+    private final boolean[] marked;
 
-    //找到从s可达的所有顶点
+    //找到从s可达的所有顶点，这些顶点都会被标记为true
     public DirectDFS(DirectGraph G, int s) {
         marked = new boolean[G.V()];
         dfs(G, s);
