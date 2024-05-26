@@ -10,8 +10,8 @@ import edu.princeton.cs.algs4.Graph;
 //搜索联通分量
 public class ConnectedComponent {
 
-    private boolean[] marked;
-    private int[] id;
+    private final boolean[] marked;
+    private final int[] id;
     private int count;
 
     public ConnectedComponent(Graph G) {

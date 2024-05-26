@@ -11,9 +11,9 @@ import java.util.Stack;
  */
 public class MyBFS {
 
-    private boolean[] marked;//表示是否已知到达某个顶点的最短路
-    private int[] edgeTo;
-    private int start;
+    private final boolean[] marked;//表示是否已知到达某个顶点的最短路
+    private final int[] edgeTo;
+    private final int start;
 
     public MyBFS(Graph G, int s) {
         marked = new boolean[G.V()];

@@ -7,6 +7,7 @@ import java.util.Scanner;
  * author: osmanthuspeace
  * createTime: 2024/5/7
  */
+@SuppressWarnings("MismatchedReadAndWriteOfArray")
 public class Experiment2 {
 
     private int n;

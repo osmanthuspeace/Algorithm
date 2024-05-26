@@ -5,7 +5,6 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 /**
  * author: osmanthuspeace
  * createTime: 2024/4/17
@@ -175,7 +174,6 @@ public class MySorts {
         }
         System.arraycopy(result, 0, arr, 0, N);
     }
-
 
     //v<w
     private static <T extends Comparable<T>> boolean less(T v, T w) {//T 表示一个具体的类型，该类型实现了 Comparable<T>，

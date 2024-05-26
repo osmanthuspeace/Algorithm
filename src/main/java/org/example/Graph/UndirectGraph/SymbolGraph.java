@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class SymbolGraph {
 
-    private ST<String, Integer> st;//符号表，映射关系为：顶点名-索引
-    private String[] keys;//反向索引，将索引对应顶点名
-    private Graph G;
+    private final ST<String, Integer> st;//符号表，映射关系为：顶点名-索引
+    private final String[] keys;//反向索引，将索引对应顶点名
+    private final Graph G;
 
     public SymbolGraph(String fileName, String separator) throws IOException {
         st = new ST<>();

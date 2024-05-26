@@ -1,6 +1,9 @@
 package org.example.Utility;
 
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.Stopwatch;
+import edu.princeton.cs.algs4.ThreeSumFast;
 
 /**
  * author: osmanthuspeace
@@ -19,7 +22,7 @@ public class DoublingTest {
     }
 
     public static void main(String[] args) {
-        for (int N = 250;N<=100000; N += N) {
+        for (int N = 250; N <= 100000; N += N) {
             double time = timeTrial(N);
             StdOut.printf("%7d %5.1f\n", N, time);
         }

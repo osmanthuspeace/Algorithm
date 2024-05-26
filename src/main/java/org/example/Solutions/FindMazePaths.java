@@ -10,11 +10,13 @@ import java.util.Scanner;
  */
 public class FindMazePaths {
 
-    private class Graph {
+    @SuppressWarnings("unchecked")
+    private static class Graph {
         private final int V; //顶点数目
         private int E;
         private final List<Integer>[] adjacency; //邻接表
         private final boolean[] marked;
+        @SuppressWarnings("MismatchedReadAndWriteOfArray")
         private final int[] edgeTo;
         private int pathCount; // 用于存储路径数量
 
@@ -112,7 +114,6 @@ public class FindMazePaths {
         g.dfs(g, m * (sx - 1) + sy, m * (fx - 1) + fy);
         return g.pathCount;
     }
-
 
     public static void main(String[] args) {
         FindMazePaths f = new FindMazePaths();

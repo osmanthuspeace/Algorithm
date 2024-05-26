@@ -16,6 +16,7 @@ public class ReadFile {
         Path path = Paths.get(fileName).toAbsolutePath(); // 获取绝对路径
         return Files.readString(path); // 直接使用Path对象读取文件内容
     }
+
     public static List<String> readFileLinesAsStringList(String fileName) throws IOException {
         Path path = Paths.get(fileName).toAbsolutePath();
         return Files.readAllLines(path);

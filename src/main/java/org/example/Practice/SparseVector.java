@@ -10,6 +10,7 @@ import java.util.Arrays;
  */
 
 //针对于大型稀疏矩阵的乘法
+@SuppressWarnings("MismatchedReadAndWriteOfArray")
 public class SparseVector {
     private final SeparateChainingHashST<Integer, Double> st;
 
