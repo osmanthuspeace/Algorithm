@@ -11,12 +11,11 @@ import java.util.Arrays;
 //添加了索引功能
 public class MyPriorityQueue<Key extends Comparable<Key>> {
 
-    private Key[] p;//存放元素
-    private int size = 0;//队列中的元素个数
     private static final int DEFAULT_SIZE = 11;
-
     private final int[] pq;//在索引优先队列中表示索引
     private final int[] qp;//索引的逆序:pq[qp[i]]=qp[pq[i]]=i
+    private Key[] p;//存放元素
+    private int size = 0;//队列中的元素个数
 
     public MyPriorityQueue() {
         this(DEFAULT_SIZE);
@@ -28,7 +27,6 @@ public class MyPriorityQueue<Key extends Comparable<Key>> {
         qp = new int[capacity + 1];
         Arrays.fill(qp, -1);
     }
-
 
     public void insert(int k, Key v) {
         if (size + 1 > p.length) {

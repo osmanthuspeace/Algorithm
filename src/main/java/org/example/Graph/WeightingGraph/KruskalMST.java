@@ -16,7 +16,7 @@ public class KruskalMST {
         mst = new ArrayDeque<>();
         var edges = new PriorityQueue<MyEdge>();
         for (var e : G.edges()) {
-            edges.add(e);
+            edges.add(e);//将所有的边加入队列中
         }
         Solution.UnionFind uf = new Solution.UnionFind(G.V());
 
@@ -27,7 +27,7 @@ public class KruskalMST {
             if (uf.find(v) == uf.find(w)) {//忽略失效的边
                 continue;
             }
-            uf.union(v, w);//用并查集代替marked标记
+            uf.union(v, w);//用并查集中v-w是否连接来代替marked标记
             mst.add(e);
         }
     }

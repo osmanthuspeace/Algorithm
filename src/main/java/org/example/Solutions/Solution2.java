@@ -11,12 +11,15 @@ import java.util.PriorityQueue;
  */
 @SuppressWarnings("unchecked")
 public class Solution2 {
-    private int id;
-    private TreeNode lowestCommonAncestorResult;
-    private boolean[] marked;
+    private int criticalConnections_id;
+    private TreeNode lowestCommonAncestor_result;
+    private boolean[] minCostConnectPoints_marked;
     @SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"})
     private ArrayDeque<Edge> mst;//存放最小生成树的边
-    private PriorityQueue<Edge> transverses;
+    private PriorityQueue<Edge> minCostConnectPoints_transverses;
+    private boolean[] allPathsSourceTarget_marked;
+    private List<Integer> allPathsSourceTarget_arr;
+    private List<List<Integer>> allPathsSourceTarget_result;
 
     public static class TreeNode {
         int val;
@@ -32,7 +35,7 @@ public class Solution2 {
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
         int[] dfs = new int[n];
         int[] low = new int[n];
-        this.id = 0;
+        this.criticalConnections_id = 0;
         List<Integer>[] graph = new List[n];
         List<List<Integer>> bridges = new ArrayList<>();
 
@@ -54,7 +57,7 @@ public class Solution2 {
     }
 
     private void dfs(int cur, int parent, int[] dfs, int[] low, List<Integer>[] graph, List<List<Integer>> bridges) {
-        dfs[cur] = low[cur] = id++;
+        dfs[cur] = low[cur] = criticalConnections_id++;
         for (int adjoin : graph[cur]) {
             if (adjoin == parent) continue;
             if (dfs[adjoin] == -1) {
@@ -69,20 +72,21 @@ public class Solution2 {
         }
     }
 
+    //235. 二叉搜索树的最近公共祖先
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (p.val > q.val) {
             dfs(root, q, p);
-            return lowestCommonAncestorResult;
+            return lowestCommonAncestor_result;
         }
         dfs(root, p, q);
-        return lowestCommonAncestorResult;
+        return lowestCommonAncestor_result;
     }
 
     private void dfs(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null)
             return;
         if (p.val <= root.val && q.val >= root.val) {
-            lowestCommonAncestorResult = root;
+            lowestCommonAncestor_result = root;
         } else if (p.val > root.val) {
             dfs(root.right, p, q);
         } else { // q.val < root.val
@@ -153,11 +157,12 @@ public class Solution2 {
         }
     }
 
+    //1584. 连接所有点的最小费用（需要优化）
     public int minCostConnectPoints(int[][] points) {
         var G = new EdgeWeightedGraph(points.length);
         int result = 0;
-        transverses = new PriorityQueue<>();
-        marked = new boolean[G.V()];
+        minCostConnectPoints_transverses = new PriorityQueue<>();
+        minCostConnectPoints_marked = new boolean[G.V()];
         mst = new ArrayDeque<>();
         for (int i = 0; i < points.length; i++) {
             for (int j = i; j < points.length; j++) {
@@ -167,19 +172,19 @@ public class Solution2 {
             }
         }
         visit(G, 0);
-        while (!transverses.isEmpty()) {
-            var e = transverses.remove();
+        while (!minCostConnectPoints_transverses.isEmpty()) {
+            var e = minCostConnectPoints_transverses.remove();
             int v = e.oneNode();
             int w = e.otherNode(v);
-            if (marked[v] && marked[w]) {
+            if (minCostConnectPoints_marked[v] && minCostConnectPoints_marked[w]) {
                 continue;
             }
             mst.add(e);
             result += e.weight;
-            if (!marked[v]) {
+            if (!minCostConnectPoints_marked[v]) {
                 visit(G, v);
             }
-            if (!marked[w]) {
+            if (!minCostConnectPoints_marked[w]) {
                 visit(G, w);
             }
         }
@@ -187,12 +192,70 @@ public class Solution2 {
     }
 
     private void visit(EdgeWeightedGraph G, int v) {
-        marked[v] = true;
+        minCostConnectPoints_marked[v] = true;
         for (var e : G.adj(v)) {
-            if (!marked[e.otherNode(v)]) {
-                transverses.add(e);
+            if (!minCostConnectPoints_marked[e.otherNode(v)]) {
+                minCostConnectPoints_transverses.add(e);
             }
         }
     }
 
+    private static class DirectGraph {
+        private final int V; //顶点数目
+        private final List<Integer>[] adjacency; //邻接表
+
+        public DirectGraph(int V) {
+            this.V = V;
+            adjacency = (List<Integer>[]) new ArrayList[V]; // 初始化邻接表
+            for (int i = 0; i < V; i++) {
+                this.adjacency[i] = new ArrayList<>();//为每一个顶点的列表初始化
+            }
+        }
+
+        public int V() {
+            return V;
+        }
+
+        //有向图
+        public void addEdge(int v, int w) {
+            adjacency[v].add(w);
+        }
+
+        public Iterable<Integer> adj(int v) {
+            return adjacency[v];
+        }
+
+    }
+
+    //797. 所有可能的路径
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        var G = new DirectGraph(graph.length);
+        allPathsSourceTarget_marked = new boolean[G.V()];
+        allPathsSourceTarget_result = new ArrayList<>();
+        for (int i = 0; i < graph.length; i++) {
+            for (var v : graph[i]) {
+                G.addEdge(i, v);
+            }
+        }
+        allPathsSourceTarget_arr = new ArrayList<>();
+        allPathsSourceTarget_arr.add(0);
+        dfs(G, 0);
+        return allPathsSourceTarget_result;
+    }
+
+    private void dfs(DirectGraph G, int cur) {
+        if (cur == G.V() - 1) {
+            allPathsSourceTarget_result.add(new ArrayList<>(allPathsSourceTarget_arr));// 找到一条完整路径时，复制arr并添加到result，否则添加的是arr的引用
+            return;
+        }
+        allPathsSourceTarget_marked[cur] = true;
+        for (var v : G.adj(cur)) {
+            if (!allPathsSourceTarget_marked[v]) {
+                allPathsSourceTarget_arr.add(v);
+                dfs(G, v);
+                allPathsSourceTarget_arr.remove(allPathsSourceTarget_arr.size() - 1);
+            }
+        }
+        allPathsSourceTarget_marked[cur] = false;
+    }
 }
