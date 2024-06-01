@@ -9,12 +9,17 @@ import java.util.Arrays;
 @SuppressWarnings("unchecked")
 //大根堆
 //添加了索引功能
-public class MyPriorityQueue<Key extends Comparable<Key>> {
+public class MyPriorityQueue<E extends Comparable<E>> {
+
+    //无论是否有索引，元素在E[]数组中都必须保持大根堆的顺序
+    //索引优先队列维护的是索引与堆位置的双向映射，通过索引，可以在 O(1) 时间内获取元素的当前优先级
+    //pq数组是从第一位开始一个一个往后存的，但是element数组中元素的索引是跟随pq数组的
+    //即将原来(从一开始递增的正常索引)映射到了自定的任意索引上
 
     private static final int DEFAULT_SIZE = 11;
-    private final int[] pq;//在索引优先队列中表示索引
-    private final int[] qp;//索引的逆序:pq[qp[i]]=qp[pq[i]]=i
-    private Key[] p;//存放元素
+    private final int[] pq;//在索引优先队列中表示索引，pq[i] 表示二叉堆中第 i 个位置存储的元素在E[]数组中的索引
+    private final int[] qp;//索引的逆序:pq[qp[i]]=qp[pq[i]]=i，表示元素索引 i 在 pq 数组中的位置（即元素 i 在堆中的位置）
+    private E[] element;//存放元素
     private int size = 0;//队列中的元素个数
 
     public MyPriorityQueue() {
@@ -22,37 +27,38 @@ public class MyPriorityQueue<Key extends Comparable<Key>> {
     }
 
     public MyPriorityQueue(int capacity) {
-        p = (Key[]) new Comparable[capacity + 1];//不用p[0]
+        element = (E[]) new Comparable[capacity + 1];//不用p[0]
         pq = new int[capacity + 1];
         qp = new int[capacity + 1];
         Arrays.fill(qp, -1);
     }
 
-    public void insert(int k, Key v) {
-        if (size + 1 > p.length) {
-            p = Arrays.copyOf(p, p.length + p.length >> 1);//扩大原来的一半
+    public void insert(int index, E v) {
+        if (size + 1 > element.length) {
+            element = Arrays.copyOf(element, element.length + element.length >> 1);//扩大原来的一半
         }
         size++;
-        pq[size] = k;
-        qp[k] = size;
-        p[size] = v;
+        pq[size] = index;
+        qp[index] = size;//索引的值一定要小于队列的容量
+        element[index] = v;
         swim(size);
     }
 
-    public Key delMax() {
+    public E delMax() {
         int indexOfMax = pq[1];
-        Key max = p[1];
+        E max = element[1];
         exchange(1, size);
         size--;
-//        p[size] = null;
+//        element[size] = null;
         sink(1);
-        p[pq[size + 1]] = null;//消除最后一个元素的引用，防止对象游离
+        element[pq[size + 1]] = null;//消除最后一个元素的引用，防止对象游离
         qp[pq[size + 1]] = -1;//消除最后一个元素的索引
+        pq[size + 1] = -1; // 清除pq数组中最后一个元素的位置
         return max;
     }
 
-    public Key max() {
-        return p[pq[1]];
+    public E max() {
+        return element[pq[1]];
     }
 
     public boolean isEmpty() {
@@ -90,13 +96,24 @@ public class MyPriorityQueue<Key extends Comparable<Key>> {
     }
 
     private boolean less(int i, int j) {
-        return p[i].compareTo(p[j]) < 0;
+        return element[pq[i]].compareTo(element[pq[j]]) < 0;
     }
 
     private void exchange(int i, int j) {
-        var temp = p[i];
-        p[i] = p[j];
-        p[j] = temp;
+        int temp = pq[i];
+        pq[i] = pq[j];
+        pq[j] = temp;
+        qp[pq[i]] = i;
+        qp[pq[j]] = j;
 
+    }
+
+    public static void main(String[] args) {
+        var test = new MyPriorityQueue<Integer>(101);
+        test.insert(50, 3);
+        test.insert(89, 4);
+        test.insert(98, 1);
+        test.insert(11, 0);
+        System.out.println(test.max());
     }
 }
