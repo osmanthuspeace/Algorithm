@@ -2,6 +2,7 @@ package org.example;
 
 import edu.princeton.cs.algs4.IndexMinPQ;
 import edu.princeton.cs.algs4.StdRandom;
+import org.example.DataStructure.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -37,7 +38,6 @@ public class Algorithm {
         }
         return operands.pop();
     }
-
 
     public static int TwoSumFast(int @NotNull [] arr) {
         var length = arr.length;
@@ -139,6 +139,34 @@ public class Algorithm {
         int t = a[i];
         a[i] = a[j];
         a[j] = t;
+    }
+
+    /**
+     * @param a 待分组排序的数组，本身是有序的
+     * @param R 分组的总数
+     */
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    public void keyIndexCountingMethod(Pair<String, Integer>[] a, int R) {
+        //对于Pair<String, Integer>，first是名字，second是组号
+        int N = a.length;
+        var aux = new String[N];//辅助数组
+        int[] count = new int[R + 1];
+        //计算每一组的出现频率
+        for (int i = 0; i < N; i++) {
+            count[a[i].second() + 1]++;
+        }
+        //将频率转换为索引，转换完成后count[r]表示第r组是从排序后的数组中的第几位开始的
+        for (int r = 0; r < R; r++) {
+            count[r + 1] += count[r];
+        }
+        //将元素分类
+        for (int i = 0; i < N; i++) {
+            aux[count[a[i].second()]++] = a[i].first();
+        }
+        //回写
+        for (int i = 0; i < N; i++) {
+            a[i] = new Pair<>(aux[i], a[i].second());
+        }
     }
 
     public static void main(String[] args) throws InterruptedException {
